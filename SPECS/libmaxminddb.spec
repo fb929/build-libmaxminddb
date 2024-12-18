@@ -16,7 +16,7 @@ The libmaxminddb library provides a C library for reading MaxMind DB files, incl
 %setup -q
 
 %build
-%configure
+%configure --prefix=/usr --libdir=%{_libdir}
 make %{?_smp_mflags}
 make check
 
@@ -24,20 +24,8 @@ make check
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 
-%post
-echo '/usr/local/lib' > /etc/ld.so.conf.d/libmaxminddb.conf
-ldconfig
-
-%postun
-# Do this only during uninstall process (not during update)
-if [ $1 -eq 0 ]; then
-    rm -f /etc/ld.so.conf.d/libmaxminddb.conf
-    ldconfig
-fi
-
 %files
-/usr/local/bin/mmdblookup
-/usr/local/lib/libmaxminddb.*
-/usr/local/lib/pkgconfig/libmaxminddb.pc
-/usr/local/include/maxminddb*
-/usr/local/share/man/man1/mmdblookup.1
+%{_libdir}/libmaxminddb.so*
+%{_includedir}/maxminddb.h
+%{_bindir}/mmdblookup
+%{_datadir}/man/man1/mmdblookup.1*
