@@ -13,15 +13,16 @@ BuildRequires:  gcc, make, autoconf, automake, libtool
 The libmaxminddb library provides a C library for reading MaxMind DB files, including the GeoIP2 databases from MaxMind.
 
 %prep
-%setup
+%setup -q
 
 %build
-./configure
-make
+%configure
+make %{?_smp_mflags}
 make check
 
 %install
-make install
+rm -rf %{buildroot}
+make install DESTDIR=%{buildroot}
 
 %post
 echo '/usr/local/lib' > /etc/ld.so.conf.d/libmaxminddb.conf
@@ -35,6 +36,8 @@ if [ $1 -eq 0 ]; then
 fi
 
 %files
+/usr/local/bin/mmdblookup
 /usr/local/lib/libmaxminddb.*
 /usr/local/lib/pkgconfig/libmaxminddb.pc
 /usr/local/include/maxminddb*
+/usr/local/share/man/man1/mmdblookup.1
