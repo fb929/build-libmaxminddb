@@ -25,7 +25,15 @@ rm -rf %{buildroot}
 make install DESTDIR=%{buildroot}
 
 %files
+%license LICENSE
+%doc README.md
 %{_libdir}/libmaxminddb.so*
+%{_libdir}/libmaxminddb.a
+%{_libdir}/libmaxminddb.la
+%{_libdir}/pkgconfig/libmaxminddb.pc
 %{_includedir}/maxminddb.h
+%{_includedir}/maxminddb_config.h
 %{_bindir}/mmdblookup
-%{_datadir}/man/man1/mmdblookup.1*
+%{_mandir}/man1/mmdblookup.1*
+%{_mandir}/man3/MMDB_*.3*
+%{_mandir}/man3/libmaxminddb.3*
